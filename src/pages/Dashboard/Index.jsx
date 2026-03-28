@@ -45,8 +45,6 @@ export default function Dashboard() {
 
   const [filters, setFilters] = useState({
     top: 10,
-    desde: "",
-    hasta: "",
   });
 
   const cargarResumen = async () => {
@@ -150,7 +148,7 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <form onSubmit={onSubmit} className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+          <form onSubmit={onSubmit} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label className="block text-xs font-medium text-gray-700">Top</label>
               <input
@@ -159,29 +157,7 @@ export default function Dashboard() {
                 min="1"
                 value={filters.top}
                 onChange={onChange}
-                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline-1 outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-700">Desde</label>
-              <input
-                type="date"
-                name="desde"
-                value={filters.desde}
-                onChange={onChange}
-                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline-1 outline-gray-300"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-700">Hasta</label>
-              <input
-                type="date"
-                name="hasta"
-                value={filters.hasta}
-                onChange={onChange}
-                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline-1 outline-gray-300"
+                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline outline-1 outline-gray-300"
               />
             </div>
 

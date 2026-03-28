@@ -18,11 +18,16 @@ function normalizarEstado(estado) {
 
 function esEstadoFinal(estado) {
   const e = normalizarEstado(estado);
-  return e === "confirmado" || e === "cancelado";
+  return e === "confirmado" || e === "cancelado" || e === "entregado";
 }
 
 function esCancelado(estado) {
   return normalizarEstado(estado) === "cancelado";
+}
+
+function esEnPreparacion(estado) {
+  const e = normalizarEstado(estado);
+  return e === "en preparación" || e === "en preparacion";
 }
 
 export default function PedidosClientes() {
@@ -175,6 +180,7 @@ export default function PedidosClientes() {
               pedidos.map((p) => {
                 const estadoFinal = esEstadoFinal(p.estado);
                 const cancelado = esCancelado(p.estado);
+                const enPreparacion = esEnPreparacion(p.estado);
 
                 return (
                   <tr key={p.id}>
@@ -231,28 +237,32 @@ export default function PedidosClientes() {
                     </td>
 
                     <td className="px-3 py-4 align-top text-sm">
-                      <div className="flex min-w-full flex-col gap-2 sm:min-w-220px sm:flex-row sm:flex-wrap">
-                        <Link
-                          to={`/pedidos-clientes/edit/${p.id}`}
-                          className="inline-flex w-full items-center justify-center rounded-md bg-black px-3 py-2 text-xs font-semibold text-white hover:bg-gray-700 sm:w-auto"
-                        >
-                          Editar
-                        </Link>
+                      <div className="grid min-w-180px grid-cols-2 gap-2">
+                        {!enPreparacion && (
+                          <Link
+                            to={`/pedidos-clientes/edit/${p.id}`}
+                            className="inline-flex items-center justify-center rounded-md bg-black px-3 py-2 text-xs font-semibold text-white hover:bg-gray-700"
+                          >
+                            Editar
+                          </Link>
+                        )}
 
                         {!estadoFinal && (
                           <>
                             <button
+                              type="button"
                               onClick={() => onConfirmar(p.id)}
                               disabled={actingId === p.id}
-                              className="inline-flex w-full items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500 disabled:opacity-50 sm:w-auto"
+                              className="inline-flex items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-500 disabled:opacity-50"
                             >
                               Confirmar
                             </button>
 
                             <button
+                              type="button"
                               onClick={() => onCancelar(p.id)}
                               disabled={actingId === p.id}
-                              className="inline-flex w-full items-center justify-center rounded-md bg-amber-600 px-3 py-2 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-50 sm:w-auto"
+                              className="inline-flex items-center justify-center rounded-md bg-amber-600 px-3 py-2 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-50"
                             >
                               Cancelar
                             </button>
@@ -261,9 +271,10 @@ export default function PedidosClientes() {
 
                         {cancelado && (
                           <button
+                            type="button"
                             onClick={() => onDelete(p.id)}
                             disabled={actingId === p.id}
-                            className="inline-flex w-full items-center justify-center rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 disabled:opacity-50 sm:w-auto"
+                            className="inline-flex items-center justify-center rounded-md bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-500 disabled:opacity-50"
                           >
                             Eliminar
                           </button>
