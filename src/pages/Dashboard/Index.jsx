@@ -157,7 +157,7 @@ export default function Dashboard() {
                 min="1"
                 value={filters.top}
                 onChange={onChange}
-                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline outline-1 outline-gray-300"
+                className="mt-1 block w-full rounded-md bg-white px-3 py-2 text-sm outline-1 outline-gray-300"
               />
             </div>
 

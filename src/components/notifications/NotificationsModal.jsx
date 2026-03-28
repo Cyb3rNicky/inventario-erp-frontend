@@ -108,7 +108,7 @@ export default function NotificationsModal({ open, onClose }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-[60]">
+    <Dialog open={open} onClose={onClose} className="relative z-60">
       <DialogBackdrop className="fixed inset-0 bg-gray-900/60" />
 
       <div className="fixed inset-0 overflow-y-auto">
