@@ -16,6 +16,7 @@ import {
   XMarkIcon,
   UsersIcon,
   BellIcon,
+  ShoppingBagIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -28,6 +29,7 @@ import NotificationsModal from "../notifications/NotificationsModal";
 const baseNavigation = [
   { name: "Productos", to: "/", icon: RocketLaunchIcon },
   { name: "Proveedores", to: "/proveedores", icon: UsersIcon },
+  { name: "Pedidos clientes", to: "/pedidos-clientes", icon: ShoppingBagIcon },
 ];
 
 const adminNavigation = [

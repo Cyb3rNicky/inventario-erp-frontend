@@ -13,6 +13,11 @@ const Proveedores = lazy(() => import("./pages/Proveedores/Index.jsx"));
 const CrearProveedor = lazy(() => import("./pages/Proveedores/Create.jsx"));
 const EditarProveedor = lazy(() => import("./pages/Proveedores/Edit.jsx"));
 
+const PedidosClientes = lazy(() => import("./pages/PedidosClientes/Index.jsx"));
+const EditarPedidoCliente = lazy(
+  () => import("./pages/PedidosClientes/Edit.jsx"),
+);
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -75,6 +80,22 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={null}>
             <EditarProveedor />
+          </Suspense>
+        ),
+      },
+      {
+        path: "pedidos-clientes",
+        element: (
+          <Suspense fallback={null}>
+            <PedidosClientes />
+          </Suspense>
+        ),
+      },
+      {
+        path: "pedidos-clientes/edit/:id",
+        element: (
+          <Suspense fallback={null}>
+            <EditarPedidoCliente />
           </Suspense>
         ),
       },
