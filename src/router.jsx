@@ -5,7 +5,9 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
 
+const Dashboard = lazy(() => import("./pages/Dashboard/Index.jsx"));
 const Productos = lazy(() => import("./pages/Productos/Index.jsx"));
+
 const CrearProducto = lazy(() => import("./pages/Productos/Create.jsx"));
 const EditarProducto = lazy(() => import("./pages/Productos/Edit.jsx"));
 
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: (
+          <Suspense fallback={null}>
+            <Dashboard />
+          </Suspense>
+        ),
+      },
+      {
+        path: "productos",
         element: (
           <Suspense fallback={null}>
             <Productos />

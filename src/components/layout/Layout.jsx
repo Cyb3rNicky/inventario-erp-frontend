@@ -16,7 +16,8 @@ import {
   XMarkIcon,
   UsersIcon,
   BellIcon,
-  ShoppingBagIcon,
+  HomeIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -27,9 +28,10 @@ import Logo from '../../../public/umg250x250.svg';
 import NotificationsModal from "../notifications/NotificationsModal";
 
 const baseNavigation = [
-  { name: "Productos", to: "/", icon: RocketLaunchIcon },
+  { name: "Dashboard", to: "/", icon: HomeIcon },
+  { name: "Productos", to: "/productos", icon: RocketLaunchIcon },
   { name: "Proveedores", to: "/proveedores", icon: UsersIcon },
-  { name: "Pedidos clientes", to: "/pedidos-clientes", icon: ShoppingBagIcon },
+  { name: "Pedidos clientes", to: "/pedidos-clientes", icon: ChartBarIcon },
 ];
 
 const adminNavigation = [

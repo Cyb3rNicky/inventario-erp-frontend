@@ -231,7 +231,7 @@ export default function PedidosClientes() {
                     </td>
 
                     <td className="px-3 py-4 align-top text-sm">
-                      <div className="flex min-w-screen flex-col gap-2 sm:min-w-220px sm:flex-row sm:flex-wrap">
+                      <div className="flex min-w-full flex-col gap-2 sm:min-w-220px sm:flex-row sm:flex-wrap">
                         <Link
                           to={`/pedidos-clientes/edit/${p.id}`}
                           className="inline-flex w-full items-center justify-center rounded-md bg-black px-3 py-2 text-xs font-semibold text-white hover:bg-gray-700 sm:w-auto"
