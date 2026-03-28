@@ -4,9 +4,14 @@ import Layout from "./components/layout/Layout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 const Login = lazy(() => import("./pages/Login.jsx"));
+
 const Productos = lazy(() => import("./pages/Productos/Index.jsx"));
 const CrearProducto = lazy(() => import("./pages/Productos/Create.jsx"));
 const EditarProducto = lazy(() => import("./pages/Productos/Edit.jsx"));
+
+const Proveedores = lazy(() => import("./pages/Proveedores/Index.jsx"));
+const CrearProveedor = lazy(() => import("./pages/Proveedores/Create.jsx"));
+const EditarProveedor = lazy(() => import("./pages/Proveedores/Edit.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -17,7 +22,6 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
-
   {
     path: "/",
     element: (
@@ -29,11 +33,9 @@ const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={null}>
-              <Productos />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={null}>
+            <Productos />
+          </Suspense>
         ),
       },
       {
@@ -49,6 +51,30 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={null}>
             <EditarProducto />
+          </Suspense>
+        ),
+      },
+      {
+        path: "proveedores",
+        element: (
+          <Suspense fallback={null}>
+            <Proveedores />
+          </Suspense>
+        ),
+      },
+      {
+        path: "proveedores/create",
+        element: (
+          <Suspense fallback={null}>
+            <CrearProveedor />
+          </Suspense>
+        ),
+      },
+      {
+        path: "proveedores/edit/:id",
+        element: (
+          <Suspense fallback={null}>
+            <EditarProveedor />
           </Suspense>
         ),
       },

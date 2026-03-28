@@ -27,6 +27,7 @@ import NotificationsModal from "../notifications/NotificationsModal";
 
 const baseNavigation = [
   { name: "Productos", to: "/", icon: RocketLaunchIcon },
+  { name: "Proveedores", to: "/proveedores", icon: UsersIcon },
 ];
 
 const adminNavigation = [
