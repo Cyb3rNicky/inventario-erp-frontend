@@ -225,7 +225,7 @@ export default function PedidosClientes() {
                     </td>
 
                     <td className="px-3 py-4 align-top text-sm text-gray-700">
-                      Q{Number(p.totalVenta ?? 0).toFixed(2)}
+                      Q{Number(p.total ?? 0).toFixed(2)}
                     </td>
 
                     <td className="px-3 py-4 align-top text-sm text-gray-700">
