@@ -60,7 +60,7 @@ export default function Productos() {
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Nombre</th>
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Código</th>
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Categoría</th>
-              <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Ubicación</th>
+              <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Bodega</th>
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Stock</th>
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Stock Mínimo</th>
               <th className="px-3 py-3 text-left text-xs font-medium tracking-wide text-gray-500 uppercase">Precio Venta</th>
@@ -76,7 +76,7 @@ export default function Productos() {
                   <td className="px-3 py-4 text-sm text-gray-900">{p.nombre}</td>
                   <td className="px-3 py-4 text-sm text-gray-900">{p.codigo}</td>
                   <td className="px-3 py-4 text-sm text-gray-700">{p.categoria}</td>
-                  <td className="px-3 py-4 text-sm text-gray-700">{p.ubicacion}</td>
+                  <td className="px-3 py-4 text-sm text-gray-700">{p.bodegaNombre}</td>
                   <td className="px-3 py-4 text-sm text-gray-700">{p.stockActual}</td>
 
                   <td className="px-3 py-4 text-sm text-gray-700">

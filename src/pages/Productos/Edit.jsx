@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductoById } from "../../services/Productos/getProductoById";
 import { updateProducto } from "../../services/Productos/updateProducto";
+import { getCategorias } from "../../services/Categorias/getCategorias";
+import { getBodegas } from "../../services/Bodegas/getBodegas";
 
 export default function EditarProducto() {
   const { id } = useParams();
@@ -10,8 +12,8 @@ export default function EditarProducto() {
   const [form, setForm] = useState({
     nombre: "",
     codigo: "",
-    categoria: "",
-    ubicacion: "",
+    categoriaId: "",
+    bodegaId: "",
     descripcion: "",
     precioVenta: "",
     costoUnitario: "",
@@ -22,9 +24,21 @@ export default function EditarProducto() {
     timestamp: "",
   });
 
+  const [categorias, setCategorias] = useState([]);
+  const [bodegas, setBodegas] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    Promise.all([getCategorias(), getBodegas()])
+      .then(([cats, bods]) => {
+        setCategorias(cats);
+        setBodegas(bods);
+      })
+      .catch(() => setError("No se pudieron cargar categorías o bodegas"));
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -38,8 +52,8 @@ export default function EditarProducto() {
         setForm({
           nombre: p.nombre ?? "",
           codigo: p.codigo ?? "",
-          categoria: p.categoria ?? "",
-          ubicacion: p.ubicacion ?? "",
+          categoriaId: String(p.categoriaId ?? ""),
+          bodegaId: String(p.bodegaId ?? ""),
           descripcion: p.descripcion ?? "",
           precioVenta: String(p.precioVenta ?? 0),
           costoUnitario: String(p.costoUnitario ?? 0),
@@ -72,8 +86,8 @@ export default function EditarProducto() {
 
     if (!form.nombre.trim()) return setError("El nombre es obligatorio");
     if (!form.codigo.trim()) return setError("El código es obligatorio");
-    if (!form.categoria.trim()) return setError("La categoría es obligatoria");
-    if (!form.ubicacion.trim()) return setError("La ubicación es obligatoria");
+    if (!form.categoriaId) return setError("La categoría es obligatoria");
+    if (!form.bodegaId) return setError("La bodega es obligatoria");
 
     const nums = ["precioVenta", "costoUnitario", "stockActual", "stockMinimo"];
     for (const k of nums) {
@@ -141,29 +155,45 @@ export default function EditarProducto() {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="categoria" className="block text-sm/6 font-medium text-gray-900">Categoría</label>
-              <input
-                id="categoria"
-                name="categoria"
-                type="text"
-                value={form.categoria}
+              <label htmlFor="categoriaId" className="block text-sm/6 font-medium text-gray-900">
+                Categoría
+              </label>
+              <select
+                id="categoriaId"
+                name="categoriaId"
+                value={form.categoriaId}
                 onChange={onChange}
                 required
-                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6"
-              />
+                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
+              >
+                <option value="">Seleccione una categoría</option>
+                {categorias.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="ubicacion" className="block text-sm/6 font-medium text-gray-900">Ubicación</label>
-              <input
-                id="ubicacion"
-                name="ubicacion"
-                type="text"
-                value={form.ubicacion}
+              <label htmlFor="bodegaId" className="block text-sm/6 font-medium text-gray-900">
+                Bodega
+              </label>
+              <select
+                id="bodegaId"
+                name="bodegaId"
+                value={form.bodegaId}
                 onChange={onChange}
                 required
-                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6"
-              />
+                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
+              >
+                <option value="">Seleccione una bodega</option>
+                {bodegas.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="sm:col-span-6">

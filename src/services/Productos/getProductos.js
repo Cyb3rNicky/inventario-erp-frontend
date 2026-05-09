@@ -7,7 +7,8 @@ export const getProductos = async (params = {}) => {
   if (params.search) qs.set("search", params.search);
   if (params.categoria) qs.set("categoria", params.categoria);
   if (params.ubicacion) qs.set("ubicacion", params.ubicacion);
-  if (typeof params.soloBajoStock === "boolean") qs.set("soloBajoStock", String(params.soloBajoStock));
+  if (typeof params.soloBajoStock === "boolean")
+    qs.set("soloBajoStock", String(params.soloBajoStock));
 
   const url = qs.toString() ? `${base}?${qs.toString()}` : base;
 
@@ -15,19 +16,21 @@ export const getProductos = async (params = {}) => {
   const data = Array.isArray(resp) ? resp : [];
 
   return data.map((p) => ({
-    id:              p.id,
-    nombre:          p.nombre,
-    codigo:          p.codigo,
-    categoria:       p.categoria,
-    ubicacion:       p.ubicacion,
-    descripcion:     p.descripcion,
-    precioVenta:     p.precioVenta,
-    costoUnitario:   p.costoUnitario,
-    stockActual:     p.stockActual,
-    stockMinimo:     p.stockMinimo,
-    stockBajo:       p.stockBajo,
+    id: p.id,
+    nombre: p.nombre,
+    codigo: p.codigo,
+    categoriaId: p.categoriaId,
+    categoria: p.categoria,
+    bodegaId: p.bodegaId,
+    bodegaNombre: p.bodegaNombre,
+    descripcion: p.descripcion,
+    precioVenta: p.precioVenta,
+    costoUnitario: p.costoUnitario,
+    stockActual: p.stockActual,
+    stockMinimo: p.stockMinimo,
+    stockBajo: p.stockBajo,
     nivelInventario: p.nivelInventario,
-    estado:          p.estado,
-    timestamp:       p.timestamp,
+    estado: p.estado,
+    timestamp: p.timestamp,
   }));
 };
