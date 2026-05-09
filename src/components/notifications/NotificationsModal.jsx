@@ -14,7 +14,11 @@ function fmtDate(iso) {
 }
 
 function normalizarEstado(estado) {
-  return String(estado || "").trim().toLowerCase();
+  return String(estado || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 function esPendienteReab(estado) {
@@ -22,9 +26,9 @@ function esPendienteReab(estado) {
   return e.includes("pend");
 }
 
-function esPedidoPorRevisar(estado) {
+function esPedidoPendiente(estado) {
   const e = normalizarEstado(estado);
-  return e === "en preparación" || e === "en preparacion";
+  return e === "pendiente";
 }
 
 export default function NotificationsModal({ open, onClose }) {
@@ -43,13 +47,11 @@ export default function NotificationsModal({ open, onClose }) {
     return reabastecimientos.filter((x) => esPendienteReab(x.estado));
   }, [reabastecimientos]);
 
-  const pedidosPorRevisar = useMemo(() => {
-    const hasEstado = pedidos.some((x) => x.estado);
-    if (!hasEstado) return [];
-    return pedidos.filter((x) => esPedidoPorRevisar(x.estado));
+  const pedidosPendientes = useMemo(() => {
+    return pedidos.filter((x) => esPedidoPendiente(x.estado));
   }, [pedidos]);
 
-  const totalPedidosPorRevisar = pedidosPorRevisar.length;
+  const totalPedidosPendientes = pedidosPendientes.length;
 
   const cargar = async () => {
     try {
@@ -58,7 +60,7 @@ export default function NotificationsModal({ open, onClose }) {
 
       const [reabData, pedidosData] = await Promise.all([
         getReabastecimientos(),
-        getPedidosClientes(),
+        getPedidosClientes("Pendiente"),
       ]);
 
       setReabastecimientos(Array.isArray(reabData) ? reabData : []);
@@ -76,6 +78,7 @@ export default function NotificationsModal({ open, onClose }) {
 
   const onAprobarReab = async (id) => {
     if (!window.confirm("¿Aprobar este reabastecimiento?")) return;
+
     try {
       setActingKey(`reab-${id}`);
       setError(null);
@@ -90,6 +93,7 @@ export default function NotificationsModal({ open, onClose }) {
 
   const onCancelarReab = async (id) => {
     if (!window.confirm("¿Cancelar este reabastecimiento?")) return;
+
     try {
       setActingKey(`reab-${id}`);
       setError(null);
@@ -165,7 +169,10 @@ export default function NotificationsModal({ open, onClose }) {
                     </div>
                   ) : (
                     pendientesReab.map((n) => (
-                      <div key={n.id} className="rounded-lg border border-gray-200 p-4">
+                      <div
+                        key={n.id}
+                        className="rounded-lg border border-gray-200 p-4"
+                      >
                         <div className="text-sm font-semibold text-gray-900">
                           {n.nombreProducto}{" "}
                           <span className="font-normal text-gray-500">
@@ -174,7 +181,8 @@ export default function NotificationsModal({ open, onClose }) {
                         </div>
 
                         <div className="mt-1 text-xs text-gray-600">
-                          ProductoId: {n.productoId} · Cantidad sugerida: {n.cantidadSugerida}
+                          ProductoId: {n.productoId} · Cantidad sugerida:{" "}
+                          {n.cantidadSugerida}
                         </div>
 
                         <div className="mt-1 text-xs text-gray-500">
@@ -208,24 +216,27 @@ export default function NotificationsModal({ open, onClose }) {
 
               <div>
                 <h4 className="text-sm font-semibold text-gray-900">
-                  Pedidos por revisar
+                  Pedidos pendientes por revisar
                 </h4>
 
                 <div className="mt-3 space-y-3">
                   {loading ? (
                     <div className="text-sm text-gray-600">Cargando…</div>
-                  ) : totalPedidosPorRevisar === 0 ? (
+                  ) : totalPedidosPendientes === 0 ? (
                     <div className="text-sm text-gray-600">
-                      No hay pedidos en preparación.
+                      No hay pedidos pendientes.
                     </div>
                   ) : (
                     <div className="rounded-lg border border-gray-200 p-4">
                       <div className="text-sm font-semibold text-gray-900">
-                        Tienes {totalPedidosPorRevisar} pedido{totalPedidosPorRevisar !== 1 ? "s" : ""} en preparación
+                        Tienes {totalPedidosPendientes} pedido
+                        {totalPedidosPendientes !== 1 ? "s" : ""} pendiente
+                        {totalPedidosPendientes !== 1 ? "s" : ""} por revisar
                       </div>
 
                       <div className="mt-2 text-sm text-gray-600">
-                        Ingresa al módulo de seguimiento para revisar, confirmar o cancelar pedidos.
+                        Ingresa al módulo de seguimiento para confirmar,
+                        cancelar o revisar los pedidos pendientes.
                       </div>
 
                       <div className="mt-4">
