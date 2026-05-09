@@ -197,7 +197,7 @@ export default function PedidosClientes() {
                         {p.detalles?.length > 0 ? (
                           p.detalles.map((d, index) => (
                             <div key={d.id ?? `${p.id}-producto-${index}`}>
-                              {d.nombreProducto || `Producto ${d.productoId}`}
+                              {d.nombreProducto}
                             </div>
                           ))
                         ) : (
