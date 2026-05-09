@@ -5,6 +5,7 @@ export const createProveedor = async (form) => {
 
   const payload = {
     nombre: String(form.nombre ?? "").trim(),
+    categoriaId: Number(form.categoriaId),
     telefono: String(form.telefono ?? "").trim(),
     email: String(form.email ?? "").trim(),
     direccion: String(form.direccion ?? "").trim(),

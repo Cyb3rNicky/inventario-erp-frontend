@@ -1,17 +1,27 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createProveedor } from "../../services/Proveedores/createProveedor";
+import { useEffect, useState } from "react";
+import { getCategorias } from "../../services/Categorias/getCategorias";
 
 export default function CrearProveedor() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     nombre: "",
+    categoriaId: "",
     telefono: "",
     email: "",
     direccion: "",
     estado: true,
   });
+
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    getCategorias()
+      .then(setCategorias)
+      .catch(() => setError("No se pudieron cargar las categorías"));
+  }, []);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -29,6 +39,7 @@ export default function CrearProveedor() {
     setError(null);
 
     if (!form.nombre.trim()) return setError("El nombre es obligatorio");
+    if (!form.categoriaId) return setError("La categoría es obligatoria");
     if (!form.telefono.trim()) return setError("El teléfono es obligatorio");
     if (!form.email.trim()) return setError("El email es obligatorio");
     if (!form.direccion.trim()) return setError("La dirección es obligatoria");
@@ -68,6 +79,27 @@ export default function CrearProveedor() {
                 required
                 className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
               />
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="categoriaId" className="block text-sm/6 font-medium text-gray-900">
+                Categoría que provee
+              </label>
+              <select
+                id="categoriaId"
+                name="categoriaId"
+                value={form.categoriaId}
+                onChange={onChange}
+                required
+                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
+              >
+                <option value="">Seleccione una categoría</option>
+                {categorias.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="sm:col-span-3">

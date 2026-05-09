@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProveedorById } from "../../services/Proveedores/getProveedorById";
 import { updateProveedor } from "../../services/Proveedores/updateProveedor";
+import { getCategorias } from "../../services/Categorias/getCategorias";
 
 export default function EditarProveedor() {
   const { id } = useParams();
@@ -9,12 +10,22 @@ export default function EditarProveedor() {
 
   const [form, setForm] = useState({
     nombre: "",
+    categoriaId: "",
     telefono: "",
     email: "",
     direccion: "",
     estado: true,
     timestamp: "",
   });
+
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    getCategorias()
+      .then(setCategorias)
+      .catch(() => setError("No se pudieron cargar las categorías"));
+  }, []);
+
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -31,6 +42,7 @@ export default function EditarProveedor() {
         if (!mounted) return;
         setForm({
           nombre: p.nombre ?? "",
+          categoriaId: String(p.categoriaId ?? ""),
           telefono: p.telefono ?? "",
           email: p.email ?? "",
           direccion: p.direccion ?? "",
@@ -59,6 +71,7 @@ export default function EditarProveedor() {
     setError(null);
 
     if (!form.nombre.trim()) return setError("El nombre es obligatorio");
+    if (!form.categoriaId) return setError("La categoría es obligatoria");
     if (!form.telefono.trim()) return setError("El teléfono es obligatorio");
     if (!form.email.trim()) return setError("El email es obligatorio");
     if (!form.direccion.trim()) return setError("La dirección es obligatoria");
@@ -103,6 +116,27 @@ export default function EditarProveedor() {
                 required
                 className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
               />
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="categoriaId" className="block text-sm/6 font-medium text-gray-900">
+                Categoría que provee
+              </label>
+              <select
+                id="categoriaId"
+                name="categoriaId"
+                value={form.categoriaId}
+                onChange={onChange}
+                required
+                className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base outline-1 outline-gray-300 sm:text-sm/6"
+              >
+                <option value="">Seleccione una categoría</option>
+                {categorias.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.nombre}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="sm:col-span-3">

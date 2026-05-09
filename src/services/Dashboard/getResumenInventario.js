@@ -6,7 +6,7 @@ export const getResumenInventario = async (params = {}) => {
   const qs = new URLSearchParams();
   if (params.search) qs.set("search", params.search);
   if (params.categoria) qs.set("categoria", params.categoria);
-  if (params.ubicacion) qs.set("ubicacion", params.ubicacion);
+  if (params.bodega) qs.set("bodega", params.bodega);
   if (typeof params.soloBajoStock === "boolean") {
     qs.set("soloBajoStock", String(params.soloBajoStock));
   }

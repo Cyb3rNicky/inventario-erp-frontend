@@ -8,6 +8,8 @@ export const getProveedorById = async (id) => {
   return {
     id: p.id,
     nombre: p.nombre ?? "",
+    categoriaId: p.categoriaId ?? "",
+    categoria: p.categoria ?? "",
     telefono: p.telefono ?? "",
     email: p.email ?? "",
     direccion: p.direccion ?? "",

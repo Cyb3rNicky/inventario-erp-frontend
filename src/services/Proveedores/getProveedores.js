@@ -9,10 +9,13 @@ export const getProveedores = async () => {
   return data.map((p) => ({
     id: p.id,
     nombre: p.nombre ?? "",
+    categoriaId: p.categoriaId ?? "",
+    categoria: p.categoria ?? "",
     telefono: p.telefono ?? "",
     email: p.email ?? "",
     direccion: p.direccion ?? "",
     estado: p.estado ?? true,
     timestamp: p.timestamp ?? "",
+    productos: p.productos ?? [],
   }));
 };

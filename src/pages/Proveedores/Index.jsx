@@ -116,6 +116,7 @@ export default function Proveedores() {
             <tr>
               <th className="py-3 pr-3 pl-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-0">ID</th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Nombre</th>
+              <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Categoría</th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Teléfono</th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Email</th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Dirección</th>
@@ -130,6 +131,7 @@ export default function Proveedores() {
                 <tr key={p.id}>
                   <td className="py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-0">{p.id}</td>
                   <td className="px-3 py-4 text-sm text-gray-900">{p.nombre}</td>
+                  <td className="px-3 py-4 text-sm text-gray-700">{p.categoria || "—"}</td>
                   <td className="px-3 py-4 text-sm text-gray-700">{p.telefono}</td>
                   <td className="px-3 py-4 text-sm text-gray-700">{p.email}</td>
                   <td className="px-3 py-4 text-sm text-gray-700">{p.direccion}</td>

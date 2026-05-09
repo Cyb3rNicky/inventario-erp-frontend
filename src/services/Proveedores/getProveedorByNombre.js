@@ -10,6 +10,9 @@ export const getProveedorByNombre = async (nombre) => {
   return data.map((p) => ({
     id: p.id,
     nombre: p.nombre ?? "",
+    categoriaId: p.categoriaId ?? "",
+    categoria: p.categoria ?? "",
+    productos: p.productos ?? [],
     telefono: p.telefono ?? "",
     email: p.email ?? "",
     direccion: p.direccion ?? "",
