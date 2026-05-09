@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getResumenInventario } from "../../services/Dashboard/getResumenInventario";
+import { getProductosRotacion } from "../../services/Dashboard/getProductosRotacion";
 import { getProductosMasVendidos } from "../../services/Dashboard/getProductosMasVendidos";
 import {
   BarChart,
@@ -35,6 +36,11 @@ function KpiCard({ title, value, subtitle }) {
 
 const cantidadColors = ["#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#1d4ed8"];
 const ingresoColors = ["#059669", "#10b981", "#34d399", "#6ee7b7", "#047857"];
+const rotacionColors = {
+  alta: "#16a34a",
+  media: "#f59e0b",
+  baja: "#dc2626",
+};
 
 export default function Dashboard() {
   const [resumen, setResumen] = useState(null);
@@ -42,6 +48,8 @@ export default function Dashboard() {
   const [loadingResumen, setLoadingResumen] = useState(false);
   const [loadingVendidos, setLoadingVendidos] = useState(false);
   const [error, setError] = useState(null);
+  const [rotacion, setRotacion] = useState([]);
+  const [loadingRotacion, setLoadingRotacion] = useState(false);
 
   const [filters, setFilters] = useState({
     top: 10,
@@ -71,10 +79,24 @@ export default function Dashboard() {
     }
   };
 
+  const cargarRotacion = async () => {
+    try {
+      setLoadingRotacion(true);
+      const data = await getProductosRotacion();
+      setRotacion(data);
+    } catch (e) {
+      setError(e.message || "No se pudo cargar la rotación de productos");
+    } finally {
+      setLoadingRotacion(false);
+    }
+  };
+
   useEffect(() => {
     setError(null);
     cargarResumen();
     cargarMasVendidos();
+    cargarRotacion();
+
   }, []);
 
   const onChange = (e) => {
@@ -225,6 +247,119 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+
+            {loadingRotacion ? (
+              <div className="text-sm text-gray-600">Cargando rotación de productos…</div>
+            ) : (
+              <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                <div className="mb-4">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    Rotación de productos
+                  </h3>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Mide qué tan rápido se mueve el inventario según ventas y pedidos.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                  <div>
+                    <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Índice de rotación
+                    </h4>
+
+                    <div className="h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={rotacion}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="nombre" hide />
+                          <YAxis />
+                          <Tooltip />
+                          <Bar dataKey="indiceRotacion" radius={[6, 6, 0, 0]}>
+                            {rotacion.map((item, index) => (
+                              <Cell
+                                key={`rotacion-${index}`}
+                                fill={
+                                  rotacionColors[String(item.nivelRotacion).toLowerCase()] ||
+                                  "#6366f1"
+                                }
+                              />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Resumen por producto
+                    </h4>
+
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-300">
+                        <thead>
+                          <tr>
+                            <th className="py-3 pr-3 pl-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-0">
+                              Producto
+                            </th>
+                            <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                              Bodega
+                            </th>
+                            <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                              Rotación
+                            </th>
+                            <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                              Nivel
+                            </th>
+                          </tr>
+                        </thead>
+
+                        <tbody className="divide-y divide-gray-200 bg-white">
+                          {rotacion.length > 0 ? (
+                            rotacion.map((item) => (
+                              <tr key={item.productoId}>
+                                <td className="py-4 pr-3 pl-4 text-sm font-medium text-gray-900 sm:pl-0">
+                                  <div>{item.nombre}</div>
+                                  <div className="text-xs text-gray-500">{item.codigo}</div>
+                                </td>
+
+                                <td className="px-3 py-4 text-sm text-gray-700">
+                                  {item.bodega || "—"}
+                                </td>
+
+                                <td className="px-3 py-4 text-sm text-gray-700">
+                                  {Number(item.indiceRotacion ?? 0).toFixed(2)}
+                                </td>
+
+                                <td className="px-3 py-4 text-sm">
+                                  <span
+                                    className={
+                                      String(item.nivelRotacion).toLowerCase() === "alta"
+                                        ? "rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700"
+                                        : String(item.nivelRotacion).toLowerCase() === "media"
+                                          ? "rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700"
+                                          : "rounded-full bg-red-100 px-2 py-1 text-xs font-semibold text-red-700"
+                                    }
+                                  >
+                                    {item.nivelRotacion || "—"}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={4} className="px-3 py-10 text-center text-sm text-gray-500">
+                                No hay datos de rotación para mostrar.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
               <h3 className="mb-4 text-sm font-semibold text-gray-900">
