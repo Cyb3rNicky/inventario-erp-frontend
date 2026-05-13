@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { login } from '../services/Auth/login';
 import { setAuth } from '../utils/auth';
 
-import Logo from '../../public/umg250x250.svg';
+import Logo from '../assets/umg250x250.svg';
 
 export default function Login() {
   const navigate = useNavigate();

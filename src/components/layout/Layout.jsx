@@ -23,7 +23,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { getAuth, clearAuth, isAdmin } from "../../utils/auth";
 
-import Logo from '../../../public/umg250x250.svg';
+import Logo from '../../assets/umg250x250.svg';
 
 import NotificationsModal from "../notifications/NotificationsModal";
 
