@@ -251,14 +251,14 @@ export default function PedidosClientes() {
                               Confirmar
                             </button>
 
-                            <button
+                            {/* <button
                               type="button"
                               onClick={() => onCancelar(p.id)}
                               disabled={actingId === p.id}
                               className="inline-flex items-center justify-center rounded-md bg-amber-600 px-3 py-2 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-50"
                             >
                               Cancelar
-                            </button>
+                            </button> */}
                           </>
                         )}
 
