@@ -149,9 +149,6 @@ export default function PedidosClientes() {
                 ID
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Cliente
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                 Productos
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -186,10 +183,6 @@ export default function PedidosClientes() {
                   <tr key={p.id}>
                     <td className="py-4 pr-3 pl-4 align-top text-sm font-medium text-gray-900 sm:pl-0">
                       {p.id}
-                    </td>
-
-                    <td className="px-3 py-4 align-top text-sm text-gray-700">
-                      {p.clienteId}
                     </td>
 
                     <td className="px-3 py-4 align-top text-sm text-gray-700">
@@ -286,7 +279,7 @@ export default function PedidosClientes() {
               })
             ) : (
               <tr>
-                <td colSpan={9} className="px-3 py-10 text-center text-sm text-gray-500">
+                <td colSpan={8} className="px-3 py-10 text-center text-sm text-gray-500">
                   {loading ? "Cargando..." : "No hay pedidos para mostrar."}
                 </td>
               </tr>

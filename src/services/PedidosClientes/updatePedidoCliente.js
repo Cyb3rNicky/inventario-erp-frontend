@@ -5,7 +5,6 @@ export const updatePedidoCliente = async (form) => {
   const url = `https://inventarioapi-the3.onrender.com/api/PedidosClientes/${id}`;
 
   const payload = {
-    clienteId: Number(form.clienteId),
     estado: String(form.estado ?? "").trim(),
     timestamp: form.timestamp || new Date().toISOString(),
     detalles: Array.isArray(form.detalles)

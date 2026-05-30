@@ -8,7 +8,6 @@ export default function EditarPedidoCliente() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    clienteId: "",
     estado: "",
     timestamp: "",
     detalles: [],
@@ -28,7 +27,6 @@ export default function EditarPedidoCliente() {
       .then((p) => {
         if (!mounted) return;
         setForm({
-          clienteId: String(p.clienteId ?? ""),
           estado: p.estado ?? "",
           timestamp: p.timestamp ?? "",
           detalles: Array.isArray(p.detalles)
@@ -58,10 +56,6 @@ export default function EditarPedidoCliente() {
     e.preventDefault();
     setError(null);
 
-    if (form.clienteId === "" || isNaN(Number(form.clienteId))) {
-      return setError("Cliente inválido");
-    }
-
     if (!form.estado.trim()) {
       return setError("El estado es obligatorio");
     }
@@ -75,7 +69,6 @@ export default function EditarPedidoCliente() {
 
       await updatePedidoCliente({
         id,
-        clienteId: Number(form.clienteId),
         estado: form.estado.trim(),
         timestamp: form.timestamp || new Date().toISOString(),
         detalles: form.detalles.map((d) => ({
@@ -110,20 +103,6 @@ export default function EditarPedidoCliente() {
           )}
 
           <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label htmlFor="clienteId" className="block text-sm/6 font-medium text-gray-900">
-                Cliente ID
-              </label>
-              <input
-                id="clienteId"
-                name="clienteId"
-                type="number"
-                value={form.clienteId}
-                disabled
-                className="mt-2 block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-700 outline-1 outline-gray-300 sm:text-sm/6"
-              />
-            </div>
-
             <div className="sm:col-span-3">
               <label htmlFor="estado" className="block text-sm/6 font-medium text-gray-900">
                 Estado

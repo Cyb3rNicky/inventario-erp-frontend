@@ -22,7 +22,6 @@ export const getPedidosClientes = async (estado = "") => {
 
   return data.map((p) => ({
     id: p.id,
-    clienteId: p.clienteId ?? 0,
     estado: p.estado ?? "",
     timestamp: p.timestamp ?? "",
     total: p.total ?? p.totalVenta ?? 0,

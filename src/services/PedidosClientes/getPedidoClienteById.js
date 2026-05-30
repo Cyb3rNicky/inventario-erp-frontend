@@ -7,7 +7,6 @@ export const getPedidoClienteById = async (id) => {
 
   return {
     id: p.id,
-    clienteId: p.clienteId ?? 0,
     estado: p.estado ?? "",
     timestamp: p.timestamp ?? "",
     totalVenta: p.totalVenta ?? 0,
